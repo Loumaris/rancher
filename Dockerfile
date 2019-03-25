@@ -2,8 +2,8 @@ FROM alpine
 
 WORKDIR /app
 
-ENV CLI_VERSION 2.0.4
-ENV KUBE_VERSION 1.11.2
+ENV CLI_VERSION 2.2.0
+ENV KUBE_VERSION 1.13.4
 
 ADD https://github.com/rancher/cli/releases/download/v${CLI_VERSION}/rancher-linux-amd64-v${CLI_VERSION}.tar.gz cli.tar.gz
 

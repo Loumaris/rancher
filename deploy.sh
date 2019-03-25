@@ -4,7 +4,7 @@ echo $CA | base64 -d > ca.crt
 
 echo "login: $URL with context: $CONTEXT"
 
-rancher login $URL --token $TOKEN --context $CONTEXT --cacert ca.crt
+rancher login $URL --token $TOKEN --context $CONTEXT
 
 echo ""
 echo ""

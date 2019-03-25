@@ -11,7 +11,6 @@ This is a small helper image to run rancher 2.0 cli command from gitlab.
 | URL        | URL of rancher server                                               |
 | TOKEN      | API token                                                           |
 | CONTEXT    | Rancher context key                                                 |
-| CA         | base64 encoded string of ca certificate (can be find in rancher ui) |
 | DEPLOYMENT | name of the deployment                                              |
 | NAMESPACE  | define the namespace which should be used                           |
 | CONTAINER  | name of the container which should be updated                       |
@@ -30,7 +29,7 @@ deploy:
   tags:
     - docker
   script:
-    - docker run -e "URL=$URL" -e "TOKEN=$TOKEN" -e "CONTEXT=$CONTEXT" -e "CA=$CA" -e "DEPLOYMENT=$DEPLOYMENT" -e "NAMESPACE=$NAMESPACE" -e "CONTAINER=$CONTAINER" -e "IMAGE=$CONTAINER_RELEASE_IMAGE" loumaris/rancher
+    - docker run -e "URL=$URL" -e "TOKEN=$TOKEN" -e "CONTEXT=$CONTEXT" -e "DEPLOYMENT=$DEPLOYMENT" -e "NAMESPACE=$NAMESPACE" -e "CONTAINER=$CONTAINER" -e "IMAGE=$CONTAINER_RELEASE_IMAGE" loumaris/rancher
   only:
     - master
 ```
