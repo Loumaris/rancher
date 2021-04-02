@@ -33,9 +33,9 @@ until $rollout_status_cmd; do
   $rollout_status_cmd
   attempts=$((attempts + 1))
   sleep 10
-  if [ $attempts -eq 60 ] then 
-    exit 2
-  fi
+#   if [ $attempts -eq 60 ]; then 
+#     exit 2
+#   fi
 done
 
 exit 0
