@@ -25,17 +25,19 @@ echo "Container............. $CONTAINER"
 echo "Image................. $IMAGE"
 echo "########### UPDATE CLUSER #################"
 rancher kubectl --namespace $NAMESPACE patch deployment $DEPLOYMENT --type strategic --patch  '{"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}'
+echo "patch done, wait for rollout..."
 
 # Check deployment rollout status every 10 seconds (max 10 minutes) until complete.
 attempts=0
-rollout_status_cmd="rancher kubectl rollout status deployment/$DEPLOYMENT --namespace $NAMESPACE "
+rollout_status_cmd="rancher kubectl rollout status deployment $DEPLOYMENT --namespace $NAMESPACE "
 until $rollout_status_cmd; do
   $rollout_status_cmd
   attempts=$((attempts + 1))
   sleep 10
-#   if [ $attempts -eq 60 ]; then 
-#     exit 2
-#   fi
+  if [ $attempts -eq 60 ]; then 
+    exit 2
+  fi
 done
+echo "rollout finished!"
 
 exit 0
