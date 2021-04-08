@@ -4,7 +4,7 @@ echo $CA | base64 -d > ca.crt
 
 # check parameters
 if [[ -z "${RESOURCE}" ]]; then
-  NAMESPACE="deployment"
+  RESOURCE="deployment"
 fi
 if [[ -z "${NAMESPACE}" ]]; then
   NAMESPACE="default"
