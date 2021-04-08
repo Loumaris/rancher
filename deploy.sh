@@ -65,7 +65,11 @@ if [ $RESOURCE = "deployment" ]; then
   done
 fi
 if [ $RESOURCE = "cronjob" ]; then
-  rancher kubectl --namespace $NAMESPACE patch $RESOURCE $DEPLOYMENT --type strategic --patch  '{"spec": {"jobTemplate": {"spec": {"template": {"spec": {"containers": [{"image": "'$IMAGE'"}]}}}}}}'
+  rancher kubectl \
+    patch $RESOURCE $DEPLOYMENT \
+    --namespace $NAMESPACE \
+    --type strategic \
+    --patch  '{"spec": {"jobTemplate": {"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}}}'
 
 fi
 
