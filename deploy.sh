@@ -38,7 +38,7 @@ fi
 echo "login: $URL with context: $CONTEXT"
 rancher login $URL --token $TOKEN --context $CONTEXT
 
-# Patch deployment
+# print summary
 echo ""
 echo ""
 echo "########### UPDATE CLUSTER #################"
@@ -49,8 +49,16 @@ echo "Container............. $CONTAINER"
 echo "Image................. $IMAGE"
 echo "########### UPDATE CLUSTER #################"
 
+# exit with error if a deploy-command fails
+set -e
+
+# deploy stuff
 if [ $RESOURCE = "deployment" ]; then
-  rancher kubectl --namespace $NAMESPACE patch $RESOURCE $DEPLOYMENT --type strategic --patch  '{"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}'
+  rancher kubectl \
+    patch $RESOURCE $DEPLOYMENT \
+    --namespace $NAMESPACE \
+    --type strategic \
+    --patch '{"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}'
 
   # Check deployment rollout status every 10 seconds (max 10 minutes) until complete.
   attempts=0
@@ -70,7 +78,4 @@ if [ $RESOURCE = "cronjob" ]; then
     --namespace $NAMESPACE \
     --type strategic \
     --patch  '{"spec": {"jobTemplate": {"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}}}'
-
 fi
-
-exit 0
