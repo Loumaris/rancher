@@ -48,20 +48,25 @@ echo "Deployment............ $DEPLOYMENT"
 echo "Container............. $CONTAINER"
 echo "Image................. $IMAGE"
 echo "########### UPDATE CLUSTER #################"
-rancher kubectl --namespace $NAMESPACE patch $RESOURCE $DEPLOYMENT --type strategic --patch  '{"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}'
-echo "patch done, wait for rollout..."
 
-# Check deployment rollout status every 10 seconds (max 10 minutes) until complete.
-attempts=0
-rollout_status_cmd="rancher kubectl rollout status $RESOURCE $DEPLOYMENT --namespace $NAMESPACE "
-until $rollout_status_cmd; do
-  $rollout_status_cmd
-  attempts=$((attempts + 1))
-  sleep 10
-  if [ $attempts -eq 60 ]; then 
-    exit 2
-  fi
-done
-echo "rollout finished!"
+if [ $RESOURCE = "deployment" ]; then
+  rancher kubectl --namespace $NAMESPACE patch $RESOURCE $DEPLOYMENT --type strategic --patch  '{"spec": {"template": {"spec": {"containers": [{"name": "'$CONTAINER'","image": "'$IMAGE'"}]}}}}'
+
+  # Check deployment rollout status every 10 seconds (max 10 minutes) until complete.
+  attempts=0
+  rollout_status_cmd="rancher kubectl rollout status $RESOURCE $DEPLOYMENT --namespace $NAMESPACE "
+  until $rollout_status_cmd; do
+    $rollout_status_cmd
+    attempts=$((attempts + 1))
+    sleep 10
+    if [ $attempts -eq 60 ]; then 
+      exit 2
+    fi
+  done
+fi
+if [ $RESOURCE = "cronjob" ]; then
+  rancher kubectl --namespace $NAMESPACE patch $RESOURCE $DEPLOYMENT --type strategic --patch  '{"spec": {"jobTemplate": {"spec": {"template": {"spec": {"containers": [{"image": "'$IMAGE'"}]}}}}}}'
+
+fi
 
 exit 0
