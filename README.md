@@ -4,6 +4,8 @@
 
 This is a small helper image to run rancher 2.0 cli command from gitlab.
 
+It supports deployments and cronjobs and wait for successful rollouts in case of deployment.
+
 ## env vars
 
 | var        | description                                                         |
@@ -11,8 +13,9 @@ This is a small helper image to run rancher 2.0 cli command from gitlab.
 | URL        | URL of rancher server                                               |
 | TOKEN      | API token                                                           |
 | CONTEXT    | Rancher context key                                                 |
+| RESOURCE   | 'deployment' or 'cronjob', default is 'deployment'                  |
 | DEPLOYMENT | name of the deployment                                              |
-| NAMESPACE  | define the namespace which should be used                           |
+| NAMESPACE  | define the namespace which should be used, default is 'default'     |
 | CONTAINER  | name of the container which should be updated                       |
 | IMAGE      | the image name and version                                          |
 
